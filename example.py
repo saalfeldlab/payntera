@@ -3,7 +3,9 @@ import payntera
 import payntera.jfx
 import time
 
+# imglyb and jnius must be imported after payntera is imported!
 import imglyb
+# jnius must be imported after imglyb is imported!
 from jnius import autoclass, JavaException
 
 
