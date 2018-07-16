@@ -2,7 +2,6 @@ import numpy as np
 import payntera
 import payntera.jfx
 import time
-import traceback
 
 import imglyb
 from jnius import autoclass, JavaException
@@ -25,8 +24,8 @@ scene, stage = payntera.jfx.start_stage(viewer.paneWithStatus.getPane())
 LabelSourceState = autoclass('org.janelia.saalfeldlab.paintera.state.LabelSourceState')
 RawSourceState   = autoclass('org.janelia.saalfeldlab.paintera.state.RawSourceState')
 
-arr    = np.random.randint(100,size=(300,200,100))
-max_id = np.max(arr)
+max_id = 30
+arr    = np.random.randint(max_id - 1, size=(300,200,100)) + 1
 img    = imglyb.to_imglib(arr)
 
 
@@ -42,7 +41,7 @@ state = LabelSourceState.simpleSourceFromSingleRAI(
     )
 
 raw           = np.zeros(arr.shape, dtype=np.uint8)
-raw[arr > 50] = 255
+raw[arr > max_id // 2] = 255
 raw_img       = imglyb.to_imglib(raw)
 
 raw_state = RawSourceState.simpleSourceFromSingleRAI(
