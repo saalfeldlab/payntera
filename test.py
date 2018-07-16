@@ -23,6 +23,7 @@ except JavaException as e:
 scene, stage = payntera.jfx.start_stage(viewer.paneWithStatus.getPane())
 
 LabelSourceState = autoclass('org.janelia.saalfeldlab.paintera.state.LabelSourceState')
+RawSourceState   = autoclass('org.janelia.saalfeldlab.paintera.state.RawSourceState')
 
 arr    = np.random.randint(100,size=(300,200,100))
 max_id = np.max(arr)
@@ -40,6 +41,20 @@ state = LabelSourceState.simpleSourceFromSingleRAI(
     viewer.baseView.getMeshWorkerExecutorService()
     )
 
+raw           = np.zeros(arr.shape, dtype=np.uint8)
+raw[arr > 50] = 255
+raw_img       = imglyb.to_imglib(raw)
+
+raw_state = RawSourceState.simpleSourceFromSingleRAI(
+    raw_img,
+    [1.0, 1.0, 1.0],
+    [0.0, 0.0, 0.0],
+    0.0,
+    255.0,
+    'blub'
+    )
+
+payntera.jfx.invoke_on_jfx_application_thread( lambda : viewer.baseView.addRawSource( raw_state ) )
 payntera.jfx.invoke_on_jfx_application_thread( lambda : viewer.baseView.addLabelSource( state ) )
 
 viewer.keyTracker.installInto(scene)
