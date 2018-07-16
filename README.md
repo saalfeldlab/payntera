@@ -33,6 +33,13 @@ pip install .
 export PYJNIUS_JAR=$PWD/build/pyjnius.jar
 ```
 
+### ImgLyb
+```shell
+git clone git@github.com:hanslovsky/imglyb
+cd imglyb
+pip install .
+```
+
 ### Payntera
 ```shell
 git clone git@github.com:saalfeldlab/payntera
