@@ -21,14 +21,23 @@ def _init_jvm_options():
                 'saalfeldlab'   : 'https://saalfeldlab.github.io/maven'
         }
 
-    imglyb_jars = jrun.jrun.resolve_dependencies(
-                endpoint=PAINTERA_ENDPOINT,
-                cache_dir=IMGLYB_JAR_CACHE_DIR,
-                m2_repo=LOCAL_MAVEN_REPO,
-                repositories=RELEVANT_MAVEN_REPOS,
-                verbose=2
+    paintera_jars = jrun.jrun.resolve_dependencies(
+        endpoint     = PAINTERA_ENDPOINT,
+        cache_dir    = IMGLYB_JAR_CACHE_DIR,
+        m2_repo      = LOCAL_MAVEN_REPO,
+        repositories = RELEVANT_MAVEN_REPOS,
+        verbose      = 0
         )
-    for jar in imglyb_jars:
+
+    logging_jars = jrun.jrun.resolve_dependencies(
+        endpoint     = '{}'.format(os.getenv('PAINTERA_SLF4J_BINDING', 'org.slf4j:slf4j-simple:1.7.25')),
+        cache_dir    = IMGLYB_JAR_CACHE_DIR,
+        m2_repo      = LOCAL_MAVEN_REPO,
+        repositories = RELEVANT_MAVEN_REPOS,
+        verbose      = 0
+        )
+
+    for jar in paintera_jars + logging_jars:
         jnius_config.add_classpath(jar)
 
     JVM_OPTIONS_STR = 'JVM_OPTIONS'
