@@ -1,7 +1,7 @@
 import jnius_config
 import os
 
-__paintera_version__ = os.getenv('PAINTERA_VERSION' ,'0.1.3-SNAPSHOT')
+__paintera_version__ = os.getenv('PAINTERA_VERSION' ,'0.2.0')
 __jfx_rt_jar         = os.getenv('JFX_RT_JAR', os.path.join(os.getenv('JAVA_HOME'), 'jre', 'lib', 'ext', 'jfxrt.jar'))
 
 
