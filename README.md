@@ -6,7 +6,7 @@ Python bindings for [Paintera](https://paintera.org)
 
 Install dependencies from conda:
 ```shell
-conda install -c hanslovsky jrun
+conda install -c hanslovsky python=3.6 numpy jrun
 ```
 
 Payntera cannot be distributed through conda currently because there is no openjfx package on conda. Instead, you will have to install some of the dependencies manually:
