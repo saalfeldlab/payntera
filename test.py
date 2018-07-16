@@ -29,7 +29,7 @@ max_id = np.max(arr)
 img    = imglyb.to_imglib(arr)
 
 
-state = LabelSourceState.simpleSourceFromSingleRAIWithoutMeshes(
+state = LabelSourceState.simpleSourceFromSingleRAI(
     img,
     [1.0, 1.0, 1.0],
     [0.0, 0.0, 0.0],
