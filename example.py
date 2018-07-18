@@ -62,7 +62,7 @@ payntera.jfx.invoke_on_jfx_application_thread( lambda : viewer.baseView.addRawSo
 payntera.jfx.invoke_on_jfx_application_thread( lambda : viewer.baseView.addLabelSource( state ) )
 
 
+# Keep Python alive (Python is unaware of Java threads).
 
 while True:
     time.sleep(0.5)
-
