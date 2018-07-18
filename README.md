@@ -1,22 +1,22 @@
 # Payntera
 
-Python bindings for [Paintera](https://paintera.org)
+Python bindings for [Paintera](http://paintera.org)
 
 ## Installation
 
-Install dependencies from conda:
+Payntera is availble as `payntera` on the conda channel `hanslovsky`.
+After installation from conda
 ```shell
-conda install -c hanslovsky python=3.6 numpy cython six jrun
+conda install -c hanslovsky -c conda-forge python=3.6 payntera
 ```
+update your environment variables [`JAVA_HOME`](https://github.com/saalfeldlab/payntera#openjdk-and-openjfx) and [`PYJNIUS_JAR`](https://github.com/saalfeldlab/payntera#pyjnius-jar-file) to use your system Java and `pyjnius.jar` that was built against your system Java dynamic libraries. 
+There is currently no JavaFX package on conda, and we cannot use OpenJDK from conda.
+On Windows, you will most likely have to update `JDK_HOME` and `PATH`, as well.
+All instructions are only tested on Linux.
 
-Payntera depends on [PyJNIus](https://github.com/kivy/pyjnius) and [imglyb](https://github.com/imglib/imlgyb). These packages are available through conda:
-```shell
-conda install -c hanslovsky python=3.6 pyjnius imglyb
-```
-There is no JavaFX package on conda, so you will have to use your system Java (set `JAVA_HOME`) and re-build `pyjnius.jar` and set `PYJNIUS_JAR`. Note that the following instructions are known to work on Linux but need some adjustments on Windows. It is expected that these instructions work on OSX, as well:
 
 ### OpenJDK and OpenJFX
-On Arch Linux:
+On Arch Linux (check your distribution's package manager for the correct packages):
 ```shell
 pacman -S jdk8-openjdk java-openjfx
 # set JAVA_HOME environment variable:
@@ -36,15 +36,8 @@ make tests
 export PYJNIUS_JAR=$PWD/build/pyjnius.jar
 ```
 
-### Payntera
-```shell
-git clone git@github.com:saalfeldlab/payntera
-cd payntera
-pip install .
-```
-
 ## Usage
-Make sure that `JAVA_HOME` and `PYJNIUS_JAR` environemnt variables are set (see [Installation](https://github.com/saalfeldlab/payntera#Installation)).
+Make sure that `JAVA_HOME` and `PYJNIUS_JAR` environment variables are set (see [Installation](https://github.com/saalfeldlab/payntera#Installation)).
 **Always** respect this order of imports:
 ```python
 import payntera
