@@ -9,7 +9,11 @@ Install dependencies from conda:
 conda install -c hanslovsky python=3.6 numpy cython six jrun
 ```
 
-Payntera cannot be distributed through conda currently because there is no openjfx package on conda. Instead, you will have to install some of the dependencies manually:
+Payntera depends on [PyJNIus](https://github.com/kivy/pyjnius) and [imglyb](https://github.com/imglib/imlgyb). These packages are available through conda:
+```shell
+conda install -c hanslovsky python=3.6 pyjnius imglyb
+```
+There is no JavaFX package on conda, so you will have to use your system Java (set `JAVA_HOME`) and re-build `pyjnius.jar` and set `PYJNIUS_JAR`. Note that the following instructions are known to work on Linux but need some adjustments on Windows. It is expected that these instructions work on OSX, as well:
 
 ### OpenJDK and OpenJFX
 On Arch Linux:
@@ -19,7 +23,7 @@ pacman -S jdk8-openjdk java-openjfx
 export JAVA_HOME=/usr/lib/jvm/java-8-openjdk
 ```
 
-### PyJNIus
+### PyJNIus JAR File
 (tested on Linux)
 ```shell
 # make sure that JAVA_HOME is set, e.g.
@@ -28,16 +32,8 @@ git clone git@github.com:kivy/pyjnius.git
 cd pyjnius
 make
 make tests
-pip install .
 # set PYJNIUS_JAR environment variable:
 export PYJNIUS_JAR=$PWD/build/pyjnius.jar
-```
-
-### ImgLyb
-```shell
-git clone git@github.com:hanslovsky/imglyb
-cd imglyb
-pip install .
 ```
 
 ### Payntera
