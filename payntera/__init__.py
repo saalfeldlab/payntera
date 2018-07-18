@@ -1,3 +1,5 @@
+from .version import __version__
+
 import jnius_config
 import os
 
