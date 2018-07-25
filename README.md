@@ -45,11 +45,16 @@ import imglyb
 from jnius import ...
 ```
 
-Example usage:
+Usage example ([`example-blobs.py`](https://github.com/saalfeldlab/payntera/blob/3f28f130c4eaf4e3f62ca9fd110b91af9092f1d4/example-blobs.py)):
 ```python
+# set heap size to reasonable value
+import jnius_config
+jnius_config.add_options('-Xmx2g')
+
 import numpy as np
 import payntera
 import payntera.jfx
+import scipy.ndimage
 import time
 
 # imglyb and jnius must be imported after payntera is imported!
@@ -57,61 +62,28 @@ import imglyb
 # jnius must be imported after imglyb is imported!
 from jnius import autoclass, JavaException
 
-
 payntera.jfx.init_platform()
+
 PainteraBaseView = autoclass('org.janelia.saalfeldlab.paintera.PainteraBaseView')
-try:
-    viewer           = PainteraBaseView.defaultView()
-except JavaException as e:
-    print(e)
-    print("inner message", e.innermessage)
-    if e.stacktrace:
-        for l in e.stacktrace:
-            print(l)
-    raise e
+viewer           = PainteraBaseView.defaultView()
+pbv              = viewer.baseView
+scene, stage     = payntera.jfx.start_stage(viewer.paneWithStatus.getPane())
 
-scene, stage = payntera.jfx.start_stage(viewer.paneWithStatus.getPane())
+shape      = (80,80,50)
+x, y, z    = np.indices(shape)
+fx, fy, fz = 2 * np.pi / np.array(shape) * np.array([10, 1, 3])
 
-LabelSourceState = autoclass('org.janelia.saalfeldlab.paintera.state.LabelSourceState')
-RawSourceState   = autoclass('org.janelia.saalfeldlab.paintera.state.RawSourceState')
-
-max_id = 30
-arr    = np.random.randint(max_id - 1, size=(300,200,100)) + 1
-img    = imglyb.to_imglib(arr)
+raw        = (1+np.sin(x * fx)) * (1+np.sin(y * fy)) * (1+x*y/(shape[0]*shape[1]))**2 * (1+np.cos(z * fz)) * ((x+y+z)/np.sum(shape))
+raw_img    = imglyb.to_imglib(raw)
+labels, nb  = scipy.ndimage.label(raw > 0.5)
+labels_img = imglyb.to_imglib(labels)
 
 
-state = LabelSourceState.simpleSourceFromSingleRAI(
-    img,
-    [1.0, 1.0, 1.0],
-    [0.0, 0.0, 0.0],
-    max_id,
-    'bla',
-    viewer.baseView.viewer3D().meshesGroup(),
-    viewer.baseView.getMeshManagerExecutorService(),
-    viewer.baseView.getMeshWorkerExecutorService()
-    )
-
-raw           = np.zeros(arr.shape, dtype=np.uint8)
-raw[arr > max_id // 2] = 255
-raw_img       = imglyb.to_imglib(raw)
-
-raw_state = RawSourceState.simpleSourceFromSingleRAI(
-    raw_img,
-    [1.0, 1.0, 1.0],
-    [0.0, 0.0, 0.0],
-    0.0,
-    255.0,
-    'blub'
-    )
+raw_state = pbv.addSingleScaleRawSource(raw_img, [1.0, 1.0, 1.0], [0.0, 0.0, 0.0], np.min(raw), 7, 'blub')
+state     = pbv.addSingleScaleLabelSource(labels_img, [1.0, 1.0, 1.0], [0.0, 0.0, 0.0], nb+1, 'bla')
 
 viewer.keyTracker.installInto(scene)
 scene.addEventFilter(autoclass('javafx.scene.input.MouseEvent').ANY, viewer.mouseTracker)
-
-payntera.jfx.invoke_on_jfx_application_thread( lambda : viewer.baseView.addRawSource( raw_state ) )
-payntera.jfx.invoke_on_jfx_application_thread( lambda : viewer.baseView.addLabelSource( state ) )
-
-
-# Keep Python alive (Python is unaware of Java threads).
 
 while True:
     time.sleep(0.5)
