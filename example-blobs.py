@@ -26,7 +26,7 @@ fx, fy, fz = 2 * np.pi / np.array(shape) * np.array([10, 1, 3])
 
 raw        = (1+np.sin(x * fx)) * (1+np.sin(y * fy)) * (1+x*y/(shape[0]*shape[1]))**2 * (1+np.cos(z * fz)) * ((x+y+z)/np.sum(shape))
 raw_img    = imglyb.to_imglib(raw)
-labels, nb  = scipy.ndimage.label(raw > 0.5)
+labels, nb = scipy.ndimage.label(raw > 0.5)
 labels_img = imglyb.to_imglib(labels)
 
 
@@ -36,5 +36,7 @@ state     = pbv.addSingleScaleLabelSource(labels_img, [1.0, 1.0, 1.0], [0.0, 0.0
 viewer.keyTracker.installInto(scene)
 scene.addEventFilter(autoclass('javafx.scene.input.MouseEvent').ANY, viewer.mouseTracker)
 
-while True:
-    time.sleep(0.5)
+hidden_state = payntera.jfx.WaitForHidden(stage=stage)
+
+while not hidden_state.is_hidden:
+    time.sleep(0.1)
