@@ -68,19 +68,4 @@ def _start_stage(root):
     stage = _get_stage()()
     stage.setScene(scene)
     stage.show()
-
-class WaitForHidden(object):
-
-    def __init__(self, stage):
-        super().__init__()
-        self.is_hidden = False
-        self._listen_on_hidden(stage)
-
-    def _set_hidden(self):
-        self.is_hidden = True
-
-    def _listen_on_hidden(self, stage):
-        self.is_hidden = False
-        handler = _get_event_handler(lambda event: self._set_hidden())
-        stage.setOnHidden(handler)
     

@@ -36,7 +36,5 @@ state     = pbv.addSingleScaleLabelSource(labels_img, [1.0, 1.0, 1.0], [0.0, 0.0
 viewer.keyTracker.installInto(scene)
 scene.addEventFilter(autoclass('javafx.scene.input.MouseEvent').ANY, viewer.mouseTracker)
 
-hidden_state = payntera.jfx.WaitForHidden(stage=stage)
-
-while not hidden_state.is_hidden:
+while stage.isShowing():
     time.sleep(0.1)
