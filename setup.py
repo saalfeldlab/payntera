@@ -1,14 +1,10 @@
-import os
-import glob
-from subprocess import call
-from distutils.core import setup
-from distutils.command.build_py import build_py
+import setuptools
 
 version={}
 with open('payntera/version.py', 'r') as f:
     exec(f.read(), version)
 
-setup(
+setuptools.setup(
     name='payntera',
     version=version['__version__'],
     author='Philipp Hanslovsky',
