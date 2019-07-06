@@ -30,7 +30,7 @@ labels, nb = scipy.ndimage.label(raw > 0.5)
 labels_img = imglyb.to_imglib(labels)
 
 
-raw_state = pbv.addSingleScaleRawSource(raw_img, [1.0, 1.0, 1.0], [0.0, 0.0, 0.0], np.min(raw), 7, 'blub')
+raw_state = pbv.addSingleScaleRawSource(raw_img, [1.0, 1.0, 1.0], [0.0, 0.0, 0.0], np.min(raw), 'blub', 7)
 state     = pbv.addSingleScaleLabelSource(labels_img, [1.0, 1.0, 1.0], [0.0, 0.0, 0.0], nb+1, 'bla')
 
 viewer.keyTracker.installInto(scene)
