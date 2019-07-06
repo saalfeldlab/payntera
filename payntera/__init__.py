@@ -1,8 +1,6 @@
-from .version import __version__
-
 import os
 
-_paintera_version = os.getenv('PAINTERA_VERSION', __version__)
+_paintera_version = os.getenv('PAINTERA_VERSION', '0.14.1')
 _jfx_rt_jar       = os.getenv('JFX_RT_JAR', os.path.join(os.getenv('JAVA_HOME'), 'jre', 'lib', 'ext', 'jfxrt.jar'))
 
 assert os.path.exists(_jfx_rt_jar) and os.path.isfile(_jfx_rt_jar), 'JavaFX runtime jar does not exist ' \
