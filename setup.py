@@ -11,6 +11,6 @@ setuptools.setup(
     author_email='hanslovskyp@janelia.hhmi.org',
     description='Python convenience bindings for Paintera',
     packages=['payntera'],
-    install_requires=['numpy', 'pyjnius', 'imglyb'],
+    install_requires=['numpy', 'pyjnius', 'imglyb', 'scyjava'],
     python_requires='>=3'
 )
